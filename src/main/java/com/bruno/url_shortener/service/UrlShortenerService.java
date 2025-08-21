@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.bruno.url_shortener.exceptions.UrlExpiredException;
 import com.bruno.url_shortener.exceptions.UrlNotFoundException;
 import com.bruno.url_shortener.model.UrlShortener;
 import com.bruno.url_shortener.repository.UrlShortenerRepository;
@@ -44,9 +45,15 @@ public class UrlShortenerService {
     }
 
 	public String getOriginalUrl(String shortUrl) {
-        return repository.findByShortUrlAndExpiresAtAfter(shortUrl, LocalDateTime.now())
-                .map(UrlShortener::getOriginaUlrl)
-                .orElseThrow(() -> new UrlNotFoundException("URL expired or does not exists"));
+        return repository.findByShortUrl(shortUrl).map(url -> {
+        	if (LocalDateTime.now().isAfter(url.getExpiresAt())) {
+        		repository.delete(url);
+
+        		throw new UrlExpiredException("URL is expired");
+        	}
+        	
+        	return url.getOriginaUlrl();
+        }).orElseThrow(() -> new UrlNotFoundException("URL does not exists"));
     }
 
 	private String generateUniqueShortUrl() {

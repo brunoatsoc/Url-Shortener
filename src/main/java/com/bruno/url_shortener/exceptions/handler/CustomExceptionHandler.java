@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
+import com.bruno.url_shortener.exceptions.UrlExpiredException;
 import com.bruno.url_shortener.exceptions.UrlNotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
@@ -68,6 +69,17 @@ public class CustomExceptionHandler {
 		body.put("message", ex.getMessage());
 		
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+	}
+
+	@ExceptionHandler(UrlExpiredException.class)
+	public ResponseEntity<?> handlerUrlExpiredException(UrlExpiredException ex, WebRequest request) {
+		Map<String, Object> body = new HashMap<String, Object>();
+		
+		body.put("timestamp", new Date());
+		body.put("path", request.getDescription(false));
+		body.put("message", ex.getMessage());
+		
+		return ResponseEntity.status(HttpStatus.GONE).body(body);
 	}
 
 }
