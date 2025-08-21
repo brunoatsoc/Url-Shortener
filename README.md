@@ -14,10 +14,8 @@ The project exposes an endpoint for shortening links:
     }
     ```
   - **Response (JSON):**
-    ```json
-    {
-      "shortUrl": "http://localhost:8080/url-shortener/{short-url}"
-    }
+    ```link
+      http://localhost:8080/url-shortener/{short-url}
     ```
 
 - **GET** `http://localhost:8080/url-shortener/{short-url}`  
