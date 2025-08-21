@@ -37,7 +37,7 @@ public class UrlShortenerService {
         url.setOriginaUlrl(longUrl);
         url.setShortUrl(shortUrl);
         url.setCreatedAt(LocalDateTime.now());
-        url.setExpiresAt(LocalDateTime.now().plusMinutes(1));
+        url.setExpiresAt(LocalDateTime.now().plusMinutes(urlExpireTimeMinutes));
         
         repository.save(url);
         
