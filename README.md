@@ -13,7 +13,7 @@ The project exposes an endpoint for shortening links:
       "url": "https://exemplo.com/alguma-url-bem-grande"
     }
     ```
-  - **Response (JSON):**
+  - **Response (LINK):**
     ```link
       http://localhost:8080/url-shortener/{short-url}
     ```
